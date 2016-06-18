@@ -1,0 +1,450 @@
+body, button, dd, div, dl, dt, fieldset, form, input, h1, h2, h3, h4, h5, h6, li, ol, p, pre, td, textarea, ul {
+	margin: 0;
+	padding: 0;
+  .unselectable();
+}
+
+@text-dark: rgb(38,38,38);
+@dark_red: rgb(153,0,0);
+@player-divider-width: 40px;
+@rounding: 15px;
+@width:  855px;
+@play_space_width: 855*.8;
+@indicator_size: 15px;
+@indicator_color: @dark_red;
+
+.box-shadow(@h: -3px, @v: 3px, @br: 5px, @sr: 6px, @color: #ccc) {
+  -mox-box-shadow: @h @v @br @sr @color;
+  -webkit-bow-shadow: @h @v @br @sr @color;
+  box-shadow: @h @v @br @sr @color;
+}
+
+.rounded-corners (@ul: 5px, @ur: 5px, @br: 5px, @bl: 5px) {
+  border-radius: @arguments;
+  -webkit-border-radius: @arguments;
+  -moz-border-radius: @arguments;
+}
+
+.centered() {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.matted() {
+  background-image: url('../images/mat.png');
+  background-repeat: repeat;
+  .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+}
+
+.starred() {
+  display: inline-block;
+  width: 59px;
+  height: 51px;
+  background-repeat: no-repeat;
+}
+
+.tokened() {
+  width: 53px;
+  height: 47px;
+  padding-top: 4px;
+  font-size: 1.8em;
+  text-align: center;
+  background-repeat: no-repeat;
+  .unselectable();
+}
+
+.interactable_token() {
+  cursor: pointer;
+}
+
+.unselectable() {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+
+.selectable() {
+   -moz-user-select: -moz-text;
+   -khtml-user-select: text;
+   -webkit-user-select: text;
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: text;
+   user-select: text;
+}
+
+#page_options {
+  align: right;
+  float: right;
+  margin-right: 30px;
+  margin-top: 5px;
+  a {
+    color: white;
+  }
+}
+
+.token_yellow {
+  background-image: url('../images/token_yellow.png');
+  .tokened();
+  .interactable_token();
+}
+
+.token_red {
+  background-image: url('../images/token_red.png');
+  .tokened();
+  .interactable_token();
+}
+
+.token_gray {
+  background-image: url('../images/token_gray.png');
+  .tokened();
+  .interactable_token();
+}
+
+.token_ghost {
+  background-image: url('../images/token_ghost.png');
+  .tokened();
+}
+
+#entry {
+  .centered();
+  display: table;
+  margin-bottom: 10px;
+
+}
+
+#pad {
+  display: inline-block;
+  margin-top: 10px;
+  .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+  background-color: fadeout(white,50%);
+  .centered();
+}
+
+#guess {
+  display: inline-block;
+  background-image: url('../images/guess.png');
+  width: 122px;
+  height: 56px;
+
+  &:active {
+    position: relative;
+    top: 5px;
+    background-image: url('../images/guess_down.png');
+  }
+}
+
+#selector {
+  .centered();
+  display: table;
+  margin-top: 10px;
+  padding: 5px 15px 5px 15px; 
+  .matted();
+  .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+
+  td {
+    padding: 2px;
+  }
+}
+
+#play_body {
+  padding: 10px 0 10px 0;
+
+  table {
+    width: 95%;
+    .centered();
+    vertical-align: middle;
+  } 
+  .stars_0 {
+    background-image: url('../images/stars_0.png');
+    .starred();
+  }
+
+  .stars_1 {
+    background-image: url('../images/stars_1.png');
+    .starred();
+  }
+
+  .stars_2 {
+    .starred();
+    background-image: url('../images/stars_2.png');
+  }
+
+  .stars_3 {
+    .starred();
+    background-image: url('../images/stars_3.png');
+  }
+
+  .stars_4 {
+    .starred();
+    background-image: url('../images/stars_4.png');
+  }
+
+  .divider_number {
+    font-size: 1.8em;
+    color: @text-dark;
+    margin: 10px;
+  }
+
+}
+
+body {
+  background-image: url('../images/starring.png');
+	background-repeat: repeat;
+}
+
+body .content {
+  background-image: url('../images/wood.png');
+	background-repeat: repeat;
+	margin-top: 40px;
+	width: @width;
+
+	.rounded-corners(32px,32px,0,0);
+	.centered();
+}
+
+.title {
+	padding-top: 25px;
+	text-align: center;
+}
+
+#in_game {
+
+  .messages {
+    @rounding: 5px;
+    padding: 10px;
+    background-color: @dark_red;
+    color: white;
+    .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+    margin-top: 15px;
+    font-weight: bold;
+    display: none;
+  }
+
+  .nav_img {
+    max-height: 50px;
+    padding: 10px 25px 0 25px;
+
+    &:active {
+      position: relative;
+      top: 5px;
+    }
+  }
+
+  #play_space {
+    .centered();
+    width: @play_space_width;
+  }
+
+  .header {
+    .matted();
+    padding: 5px 0 5px 0px;
+  }
+
+  .player { 
+    display: inline-block;
+    width:45%;
+    color: @text-dark;
+    font-size: 2em;
+  }
+
+  .indicator {
+    position: relative;
+    top: 5px;
+    display: inline-block; 
+    border-style:solid;
+    border-width: @indicator_size;
+    width:0;
+    height:0;
+  }
+
+  #left.player {
+    text-align: right;
+    margin-right: @player-divider-width/2;
+    .indicator {
+      border-color: transparent @indicator_color transparent transparent;
+      border-width: @indicator_size + 1;
+      top: 6px;
+    }
+
+  }
+
+  #right.player {
+    margin-left: @player-divider-width/2;
+    .indicator {
+      border-color: transparent transparent transparent @indicator_color;
+    }
+  }
+
+  #play_body {
+    margin-top: 15px;
+    .matted();
+    min-height: 300px;
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.invisible {
+  display: none;
+}
+
+@border-color: #595959;
+@background-color: rgba(255,255,255,.25);
+@font-color: rgb(29,29,29);
+@font-size: 1.2em;
+
+
+#sign_wall,#select_game {
+
+  #nav-border {
+    display: inline-block;
+    border-top: 2px solid @border-color; 
+    position: relative;
+    bottom: 22px;
+  }
+
+  #dialog {
+    font-size: @font-size; 
+    color: @font-color;
+    margin-top: 100px;
+    .centered();
+    width: 550px;
+    min-height: 350px;
+    background-color: @background-color;
+    border: 2px solid @border-color;
+    border-top: 0px;
+    @rounding: 15px;
+    .rounded-corners(0,0,@rounding,@rounding);
+    position: relative;
+
+    .nav {
+      list-style-type: none;
+      display: inline;
+      li {
+        position: relative;
+        .rounded-corners(@rounding,@rounding,0,0);
+        padding: 10px;
+        background-color: @background-color;
+        display: inline;
+        bottom: 31px;
+        left: -2px;
+
+        &.selected{
+          border: 2px solid @border-color;
+          border-bottom: 0px;
+        }
+
+        &:hover {
+          background-color: rgba(255,255,255,.45); 
+          cursor: hand;
+        }
+
+        &:active {
+          background-color: rgba(255,255,255,.85);
+        }
+      }
+    }
+
+    .controls {
+      margin-left: 50px;
+      margin-right: 50px;
+      margin-top: 50px;
+
+      table {
+        border-spacing: 20px;
+      }
+
+      td {
+        font-size: @font-size; 
+
+      }
+
+      .messages {
+        @rounding: 5px;
+        padding: 10px;
+        background-color: @dark_red;
+        color: white;
+        .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+        margin-top: 15px;
+        font-weight: bold;
+        display: none;
+      }
+    }
+  }
+
+
+  input[type=text] {
+    font-size: @font-size;
+    @rounding: 5px;
+    .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+    background-color: rgba(0,0,0,.1);
+    border: 2px solid @border-color;
+    height: 35px;
+    .selectable();
+    
+    &:hover {
+      background-color: rgba(0,0,0,.15);
+    }
+
+    &:focus {
+      border-color: darken(@border-color,50%);
+      background-color: rgba(0,0,0,.3);
+      outline: none;
+    }
+  }
+
+  button {
+    font-size: @font-size;
+    padding: 5px 20px 5px 20px;
+    color: white; 
+    background-color: rgba(0,0,0,.5);
+    @rounding: 5px;
+    .rounded-corners(@rounding,@rounding,@rounding);
+    border: 2px solid darken(@border-color,20%);
+    .box-shadow(-3px, 3px, 10px, 1px, @border-color);
+
+    &:hover {
+      background-color: rgba(0,0,0,.6);
+    }
+
+    &:active {
+      .box-shadow(0px,0px,0px,0px);
+      background-color: rgba(0,0,0,.7);
+      position: relative;
+      left: -3px;
+      top: 3px;
+    }
+  }
+}
+
+#sign_wall {
+  #nav-border {
+    width: 478px;
+    left: 73px;
+  }
+}
+
+#select_game {
+  #nav-border {
+      width: 423px;
+      left: 128px;
+  }
+
+  .select button {
+    font-size: .8em;
+    width: 400px;
+    text-align: left;
+    .box-shadow(-1px, 1px, 5px, 1px, @border-color);
+  }
+}

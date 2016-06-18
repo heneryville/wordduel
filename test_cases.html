@@ -1,0 +1,214 @@
+<html>
+  <head>
+    <title>Word Duel Tests</title>
+    <script language='javascript' src='scripts/jquery-1.7.1.js'></script>
+    <script language='javascript' src='scripts/underscore-1.3.1.js'></script>
+    <script language='javascript' src='scripts/duel.js'></script>
+    <script language='javascript' src='../jsunit/app/jsUnitCore.js'></script>
+  </head>
+  <body>
+    <script language='javascript'>
+      "use strict";
+      var name = "";
+      var email = "";
+      var hash = "";
+      var created = false;
+      var duel = {};
+
+
+      //Utility functions for testing
+      function S4() {
+         return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+      }
+      function guid() {
+         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+      }
+
+      function setUp() {
+        this.name = 'test_user_' + guid();
+        this.email = name + '@gmail.com';
+        this.hash = 'hashed';
+        this.duel = newDuel();
+      }
+      
+      function newDuel() {
+        var duel = new Duel();
+        duel.setSync();
+        return duel;
+      }
+
+      function signIn() {
+        duel.create_user(name,email,hash,function(success,why){
+          assert(success);
+        });
+      }
+
+      function tearDown() {
+      }
+
+      //If your want to run a test from the console directly, pass the
+      // test as an arugement to this. This will ensure that it is
+      // setup correctly with the appropriate context
+      function run(func) {
+        _.bind(setUp,window)();
+        _.bind(func,window)();
+      }
+
+      //Asserts that:
+      //  Can create a user
+      //  When a user is created, they are signed in
+      function xest_CreateUser_SignsIn() {
+        var name = 'test_user_' + guid();
+        var email = name + '@wordgame.com';
+        var hash = 'hashed';
+        //Arrange
+        var returns = false;
+        var raises_sign_in_event = false;
+
+        $(document).bind('sign_in',function(){
+            raises_sign_in_event = true;
+          });
+
+        //Act
+        duel.create_user(name,email,hash,function(success) {
+          returns = true;
+          //Assert
+          assert("Unsuccessful ajax",success);
+
+          //Signed in
+          assertTrue(duel.pin().length > 0);
+          assertEquals(name,duel.user());
+          assertEquals(email,duel.email());
+        });
+
+        //Assert
+        assert("Callback no called",returns);
+        assert("Sign in event not raised",raises_sign_in_event);
+
+        //Restore state
+        duel.sign_out();
+      }
+
+      //Asserts that:
+      // Cannot create two users of the same email
+      function xest_CreateUser_CannotDuplicate() {
+        var name = 'test_user1';
+        var name2 = 'test_user2';
+        var email = 'test_user_'+guid();
+        var hash = 'hashed';
+        var returned = false;
+        duel.create_user(name,email,hash,function(success){});
+        duel.create_user(name2,email,hash,function(success,why){
+          returned = true;
+          assertFalse("Allowed creation of two users",success);
+          assertTrue(why.length> 0);
+        });
+        assert('Never returned a value',returned);
+      }
+
+
+      //Asserts that:
+      // Sign in results in user having a pin
+      // The sign in event is raised
+      function xest_SignIn() {
+        var name = this.name;
+        var email = this.email;
+        var hash = this.hash;
+        var returns = false;
+        var raises_sign_in_event = false;
+
+        duel.create_user(name,email,hash);
+        duel.sign_out();
+
+        $(document).bind('sign_in',function(){
+            raises_sign_in_event = true;
+          });
+
+        //Act
+        duel.sign_in(email,hash,function(success) {
+          returns = true
+          //Signed in
+          assertEquals(name,duel.user());
+          assertTrue(duel.pin().length > 0);
+          assertEquals(email,duel.email());
+        });
+
+        assert(returns);
+        assert(raises_sign_in_event);
+        duel.sign_out();
+      }
+
+      //Asserts that:
+      //  You must be signed in to start a game with someone
+      function xest_StartGameWith_MustBeSignedIn() {
+        duel.sign_out();
+        var theirEmail = 'other@other.com';
+        var returns = false;
+
+        duel.start_game(theirEmail,function(success,why,game){
+          returns = true;
+          assertFalse(success);
+          assertUndefined(game);
+        });
+        assert(returns);
+      }
+
+      //Asserts that:
+      // When you create a game with another player, you get a game object
+      // The game object is the active game object
+      // The game object has a user ID
+      // The game is really with the other player
+      // I am player 1
+      // They are player 2
+      function test_StartGameWith() {
+
+        var otherName = 'test_user_'+guid();
+        var otherEmail = otherName + '@gmail.com'
+        var otherHash = 'hashed'
+        duel.create_user(otherName,otherEmail,otherHash);
+        signIn();
+        var returns = false;
+        var raises_active_game_event = false;
+        $(document).bind('active_game',function(){
+             raises_active_game_event= true;
+          });
+
+        duel.start_game(otherEmail,function(success,why,game){
+          returns = true;
+          assert(success);
+
+          //There is exactly one game
+          assertEquals(1,_(duel.games()).keys().length);
+
+          //It is the same game as the one retured
+          assertNotUndefined("Game not listed by id", duel.game(game.id()))
+          assertEquals(game,duel.active_game());
+
+          //They are player 2
+          assertEquals(otherName,game.player2.Name);
+
+          //I am player 1
+          assertEquals(name,game.player1.Name);
+
+          //In initial state, nothing is marked
+          for(var i=0; i<26; ++i) {
+            assertFalse(game.is_marked(i));
+            assertFalse(game.is_grayed(i));
+          }
+
+          //In the initial state, neither character can go (the need to guess)
+          //assertFalse(game.i_can_go);
+          //assertFalse(game.they_can_go);
+        });
+        assert(returns);
+        assert(raises_active_game_event);
+      }
+    
+      function test_GetGameWith
+
+      
+
+    </script>
+  </body>
+</html>
+

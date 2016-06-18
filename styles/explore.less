@@ -1,0 +1,199 @@
+body, button, dd, div, dl, dt, fieldset, form, input, h1, h2, h3, h4, h5, h6, li, ol, p, pre, td, textarea, ul {
+	margin: 0;
+	padding: 0;
+  .unselectable();
+}
+
+.unselectable() {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+
+.selectable() {
+   -moz-user-select: -moz-text;
+   -khtml-user-select: text;
+   -webkit-user-select: text;
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: text;
+   user-select: text;
+}
+
+@text-dark: rgb(38,38,38);
+@player-divider-width: 40px;
+@rounding: 15px;
+@width:  855px;
+@play_space_width: 855*.8;
+@indicator_size: 15px;
+@indicator_color: rgb(153,0,0);
+
+.box-shadow(@h: -3px, @v: 3px, @br: 5px, @sr: 6px, @color: #ccc) {
+  -mox-box-shadow: @h @v @br @sr @color;
+  -webkit-bow-shadow: @h @v @br @sr @color;
+  box-shadow: @h @v @br @sr @color;
+}
+.rounded-corners (@ul: 5px, @ur: 5px, @br: 5px, @bl: 5px) {
+  border-radius: @arguments;
+  -webkit-border-radius: @arguments;
+  -moz-border-radius: @arguments;
+}
+
+.centered() {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.matted() {
+  background-image: url('../images/mat.png');
+  background-repeat: repeat;
+  .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+}
+
+body {
+  background-image: url('../images/starring.png');
+	background-repeat: repeat;
+}
+
+body .content {
+  background-image: url('../images/wood.png');
+	background-repeat: repeat;
+	margin-top: 40px;
+	width: @width;
+	height:100%;
+	.rounded-corners(32px,32px,0,0);
+	.centered();
+}
+
+.title {
+	padding-top: 25px;
+	text-align: center;
+}
+
+
+.hidden {
+  visibility: hidden;
+}
+
+@border-color: #595959;
+@background-color: rgba(255,255,255,.25);
+@font-color: rgb(29,29,29);
+@font-size: 1.2em;
+
+#dialog {
+  font-size: @font-size; 
+  color: @font-color;
+  margin-top: 100px;
+  .centered();
+  width: 550px;
+  min-height: 350px;
+  background-color: @background-color;
+  border: 2px solid @border-color;
+  border-top: 0px;
+  @rounding: 15px;
+  .rounded-corners(0,0,@rounding,@rounding);
+  position: relative;
+
+  .nav {
+    list-style-type: none;
+    display: inline;
+    li {
+      position: relative;
+      .rounded-corners(@rounding,@rounding,0,0);
+      padding: 10px;
+      background-color: @background-color;
+      display: inline;
+      bottom: 31px;
+      left: -2px;
+
+      &.selected{
+        border: 2px solid @border-color;
+        border-bottom: 0px;
+      }
+
+      &:hover {
+        background-color: rgba(255,255,255,.45); 
+        cursor: hand;
+      }
+
+      &:active {
+        background-color: rgba(255,255,255,.85);
+      }
+    }
+  }
+
+  #nav-border {
+    display: inline-block;
+    width: 478px;
+    border-top: 2px solid @border-color; 
+    position: relative;
+    bottom: 22px;
+    left: 73px;
+  }
+
+  .controls {
+    margin-left: 50px;
+    margin-top: 50px;
+
+    table {
+      border-spacing: 20px;
+    }
+
+    td {
+      font-size: @font-size; 
+
+    }
+  }
+}
+
+input[type=text] {
+  font-size: @font-size;
+  @rounding: 5px;
+  .rounded-corners(@rounding,@rounding,@rounding,@rounding);
+  background-color: rgba(0,0,0,.1);
+  border: 2px solid @border-color;
+  height: 35px;
+  .selectable();
+  
+  &:hover {
+    background-color: rgba(0,0,0,.15);
+  }
+
+  &:focus {
+    border-color: darken(@border-color,50%);
+    background-color: rgba(0,0,0,.3);
+    outline: none;
+  }
+}
+
+button {
+  font-size: @font-size;
+  padding: 5px 20px 5px 20px;
+  color: white; 
+  background-color: rgba(0,0,0,.5);
+  @rounding: 5px;
+  .rounded-corners(@rounding,@rounding,@rounding);
+  border: 2px solid darken(@border-color,20%);
+  .box-shadow(-3px, 3px, 10px, 1px, @border-color);
+
+  &:hover {
+    background-color: rgba(0,0,0,.6);
+  }
+
+  &:active {
+    .box-shadow(0px,0px,0px,0px);
+    background-color: rgba(0,0,0,.7);
+    position: relative;
+    left: -3px;
+    top: 3px;
+  }
+}
+

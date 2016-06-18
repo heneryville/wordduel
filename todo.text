@@ -1,0 +1,6 @@
+-Make the password field starred
+-Hash passwords before pushing them over the wire
+-Change the navigations to the glassy buttons
+-Add a matching service
+-Add the word exploration page
+-Add a way to enter your secret word

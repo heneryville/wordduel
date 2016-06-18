@@ -1,0 +1,133 @@
+<html>
+  <head>
+    <script type="text/javascript" src="scripts/underscore-1.3.1.js"></script>
+    <script type="text/javascript" src="scripts/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="scripts/duel.js"></script>
+    <script type="text/javascript" src="scripts/duel-ui.js"></script>
+
+    <script type="text/template" id="history_row">
+      <tr>
+        <% if(left) {%>
+          <td> <span class="stars_<%=left_stars%>"/> </td>
+          <td> <div class="<%= mark_as(left[0])  %>"><%= left[0] %></div> </td>
+          <td> <div class="<%= mark_as(left[1])  %>"><%= left[1] %></div> </td>
+          <td> <div class="<%= mark_as(left[2])  %>"><%= left[2] %></div> </td>
+          <td> <div class="<%= mark_as(left[3])  %>"><%= left[3] %></div> </td>
+        <% }else { %>
+          <% for(var i=0; i<5; ++i) { %>
+            <td/>
+          <% } %>
+        <% } %>
+        <td> <div class="divider_number"><%= row+1 %></div> </td>
+        <% if(right) {%>
+          <td> <div class="token_yellow"><%= right[0] %></div> </td>
+          <td> <div class="token_yellow"><%= right[1] %></div> </td>
+          <td> <div class="token_yellow"><%= right[2] %></div> </td>
+          <td> <div class="token_yellow"><%= right[3] %></div> </td>
+          <td> <span class="stars_<%= right_stars %>"/> </td>
+        <% }else { %>
+          <% for(var i=0; i<5; ++i) { %>
+            <td/>
+          <% } %>
+        <% } %>
+      </tr>
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        duel.sign_in('test_user_1@gmail.com','hashed',function(success,why){
+          if(!success){console.log("Failed to log in: " + why);}
+          else{
+            duel.get_game_with('test_user_2@gmail.com'); 
+          }
+        });
+      });
+
+    </script>
+
+		<link rel="stylesheet/less" type="text/css" href="styles/wordduel.less"/>
+    <script type="text/javascript" src="scripts/less-1.3.0.min.js"></script>
+    <title>Word Duel</title>
+  </head>
+  <body>
+		<div class="content">
+			<div class="title">
+				<img src="images/wordduel.png" alt="Word Duel"/>
+				<br/>
+				<img class="nav_img" src="images/current_games.png" alt="Current Games"/>
+				<img class="nav_img" src="images/history.png" alt="history"/>
+			</div>
+
+      <div id="in_game" class="invisible">
+
+        <div id="play_space">
+          <div class="header">
+            <span id="left" class="player">
+              <span class="name"></span>
+              <div class="indicator"></div>
+            </span>
+            <span id="right" class="player">
+              <div class="indicator"></div>
+              <span class="name"></span>
+            </span>
+          </div>
+          <div id="play_body">
+            <table id="history"> </table>
+          </div>
+
+        <div id="messages">
+        </div>
+
+          <div id="entry">
+            <div id="pad">
+              <table>
+                <tr>
+                  <td> <div class="token_ghost"></div> </td>
+                  <td> <div class="token_ghost"></div> </td>
+                  <td> <div class="token_ghost"></div> </td>
+                  <td> <div class="token_ghost"></div> </td>
+                </tr>
+              </table>
+            </div>
+            <div id="guess"> </div>
+          </div>
+
+        <div id="selector">
+          <table>
+          </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="sign_wall">
+        <div id='dialog'>
+          <ul class="nav">
+            <li class="selected">Sign In</li>
+            <li>Create Account</li>
+          </ul>
+          <div id="nav-border"> </div>
+
+          <div class="controls">
+            
+            <table>
+              <tr>
+                <td><span class="label">Email</span></td>
+                <td><input type='text' id="email" size='27'/></td>
+              </tr>
+              <tr>
+                <td><span class="label">Password</span></td>
+                <td><input type='text' id="password" size='27'/></td>
+              </tr>
+              <tr>
+                <td/>
+                <td>
+                  <button id="sign_in">Sign In</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+		</div>
+  </body>
+</html>
